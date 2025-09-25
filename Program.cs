@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Bibilioteca;
 
-Livros livro = new Livros(nome);
+Livros livro = new Livros();
 
 Console.WriteLine("Seja bem vindo ao sistema da Bibilioteca");
 
@@ -30,19 +30,19 @@ while (opcao != 6)
             break;
 
         case "2":
-            
+            livro.ListarLivro();
             break;
 
         case "3":
-
+            livro.PegarLivro();
             break;
 
         case "4":
-
+            livro.DevolverLivro();
             break;
 
         case "5":
-
+            livro.CadastraPessoa();
             break;
 
 
