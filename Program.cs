@@ -8,6 +8,7 @@ using System.Threading.Tasks.Dataflow;
 using Bibilioteca;
 
 Livros livro = new Livros();
+Pessoa pessoa = new Pessoa();
 
 Console.WriteLine("Seja bem vindo ao sistema da Bibilioteca");
 
@@ -26,7 +27,10 @@ while (opcao != 6)
     switch (Console.ReadLine())
     {
         case "1":
-            livro.CadastrarLivro();   
+            Console.WriteLine("Digite o nome do livro que deseja cadastrar");
+            string nomeLivroCadastro = Console.ReadLine();
+            livro.CadastrarLivro(nomeLivroCadastro);
+            Console.WriteLine("Livro cadastrado com sucesso");
             break;
 
         case "2":
@@ -34,18 +38,44 @@ while (opcao != 6)
             break;
 
         case "3":
-            livro.PegarLivro();
-            break;
+            Console.WriteLine("Digite seu nome de usuario");
+            string nomeUsuario = Console.ReadLine();
+            Pessoa pessoaEncontrada = Pessoa.Buscar(nomeUsuario);
+
+            if (pessoaEncontrada == null)
+            {
+                Console.WriteLine("Nome de usuario não encontrado, faça seu cadastro");
+            }
+            else
+            {
+                Console.WriteLine("Qual livro deseja pegar emprestado?");
+                string nomeLivro = Console.ReadLine();
+                Livros livroEncontrado = Livros.PegarLivro(nomeLivro);
+
+                if (livroEncontrado == null)
+                {
+                    Console.WriteLine("Esse livro não foi encontrado ou não está disponivel no momento");
+                }
+                else
+                {
+                    livroEncontrado.EmprestarLivro(pessoaEncontrada); // pessoa encontada é um objeto e está no parametro do metodo para associação da pessoa com o livro no emprestimo
+                    Console.WriteLine($" O livro {livroEncontrado.Nome} foi emprestado {pessoaEncontrada.Nome} ");
+                }
+            }    
+        break;
 
         case "4":
-            livro.DevolverLivro();
+            livro.DevolverLivro();// criar logica do metodo
             break;
 
         case "5":
-            livro.CadastraPessoa();
+            Console.WriteLine("Digite seu nome de usuario");
+            string nomePessoa = Console.ReadLine();
+            Console.WriteLine("Digite seu email");
+            string email = Console.ReadLine();
+            Pessoa.CadastraPessoa(nomePessoa, email);
             break;
-
-
+            
     }
 
 }

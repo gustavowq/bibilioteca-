@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Net.Sockets;
 using System.Reflection.Emit;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 
 namespace Bibilioteca
@@ -14,8 +15,9 @@ namespace Bibilioteca
     {
         public string Nome{ get; private set; }
         public int Id{ get; private set; }
-        public bool disponivel = true; 
-        public Pessoa pessoa = new Pessoa();
+        public bool disponivel = true;
+        public Pessoa pessoa{ get; private set; }
+        
         
 
         static private List<Livros> livro = new List<Livros>();
@@ -28,15 +30,17 @@ namespace Bibilioteca
         {
             Nome = nome;
             Id = id;
+
         } 
+        
 
         static int contador = 1;
-        public void CadastrarLivro() 
+        public void CadastrarLivro(string nomeLivro) 
         {
             Livros novolivro = new Livros();
-            Console.WriteLine("Digite o nome do livro que deseja cadastrar");
-            novolivro.Nome = Console.ReadLine();
 
+            novolivro.Nome = nomeLivro;
+           
             novolivro.Id = contador++;
             livro.Add(novolivro);
         }
@@ -48,69 +52,43 @@ namespace Bibilioteca
             {
                 if (livro[i].disponivel == true)
                 {
-                    Console.WriteLine(livro[i].Nome);
+                    Console.WriteLine(livro[i].Nome); 
                 }
             }
         }
 
-        public void PegarLivro() // 
+        public static Livros PegarLivro(string nomeLivro) // guarda dentro do objeto o nome da pessoa encontrada
         {
-            Console.WriteLine("digite seu nome");
-            string verificarNome = Console.ReadLine();
-            bool pessoaEncontrada = false;
-            string NomeLivro;
-            
-            for (int i = 0; i != Pessoa.pessoas.Count; i++) //
+            // verificar disponibilidade do livro 
+            if (string.IsNullOrWhiteSpace(nomeLivro))
+                return null;
+
+            string nomeLivroRefinado = nomeLivro.Trim().ToLowerInvariant();
+
+            for (int i = 0; i != livro.Count; i++)
             {
-
-                if (Pessoa.pessoas[i].Nome == verificarNome)
-                {
-
-                    pessoaEncontrada = true;
-                    Console.WriteLine("Digite o nome do livro que deseja");
-                    NomeLivro = Console.ReadLine();
-
-                }
-
-                if (pessoaEncontrada)
-                {
-                    bool livroEmprestado = false;
-                    for (int z = 0; z != livro.Count; z++) //condição que veerifica se o livro existe/está deiponivel e empresta ele
-                    {
-                        if (livro[z].Nome == NomeLivro & livro[z].disponivel == true)
-                        {
-                            livro[z].pessoa = Pessoa.pessoas[i];
-                            livro[z].disponivel = false;
-                            livroEmprestado = true;
-                            break;
-                        }
-                    }
-                    if (livroEmprestado == false)
-                    {
-                        Console.WriteLine("Livro indisponivel");
-                    }
-                }
-                else //caso não tenha encontrado a pessoa no cadastro, o metodo de cadastro é chamado
-                {
-                    Console.WriteLine("Seu nome não foi encontrado nos registro, porfavor faça o seu cadastro");
-                    CadastraPessoa();
-                }
+                var L = livro[i];
+                if (nomeLivroRefinado == L.Nome.Trim().ToLowerInvariant() && L.disponivel == true)
+              
+                    return L;      
             }
-           
-          
- 
 
+            return null;
         }
+
+        public void EmprestarLivro(Pessoa nomePessoa)
+        {
+            this.disponivel = false; //o "this" referencia o objeto da class
+            this.pessoa = nomePessoa; // associa a proprieda pessoa da class Livros com a class Pessoa
+        }
+
 
         public void DevolverLivro()
         {
 
         }
 
-        public void CadastraPessoa()
-        {
-
-        }
+    
         
         
 
