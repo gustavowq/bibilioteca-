@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Dynamic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Reflection.Emit;
@@ -13,11 +14,11 @@ namespace Bibilioteca
 
     public class Livros
     {
-        public string Nome{ get; private set; }
-        public int Id{ get; private set; }
-        public bool disponivel = true;
-        public Pessoa pessoa{ get; private set; }
-        
+        public string Nome { get; private set; }
+        public int Id { get; private set; }
+        public bool disponivel = true; 
+        public Pessoa pessoa { get; private set; }
+
         
 
         static private List<Livros> livro = new List<Livros>();
@@ -31,18 +32,27 @@ namespace Bibilioteca
             Nome = nome;
             Id = id;
 
-        } 
-        
+        }
+
 
         static int contador = 1;
-        public void CadastrarLivro(string nomeLivro) 
+        public void CadastrarLivro(string nomeLivro) //verificar espaços em brano e valores null
         {
-            Livros novolivro = new Livros();
 
-            novolivro.Nome = nomeLivro;
-           
-            novolivro.Id = contador++;
-            livro.Add(novolivro);
+            if (string.IsNullOrWhiteSpace(nomeLivro))
+            {
+                Console.WriteLine("Cadastro inválido");
+            }
+            else
+            {
+                Livros novolivro = new Livros();
+
+                novolivro.Nome = nomeLivro;
+
+                novolivro.Id = contador++;
+                livro.Add(novolivro);
+                Console.WriteLine("O livro foi cadastrado");
+            }
         }
 
         public void ListarLivro()  //Faz uma verificação  se o livro está disponivel antes de mostrar na tela
@@ -50,9 +60,10 @@ namespace Bibilioteca
 
             for (int i = 0; i != livro.Count; i++)
             {
+                Console.WriteLine($"Os livros disponiveis são");
                 if (livro[i].disponivel == true)
                 {
-                    Console.WriteLine(livro[i].Nome); 
+                    Console.WriteLine($" {livro[i].Nome}");
                 }
             }
         }
@@ -69,8 +80,8 @@ namespace Bibilioteca
             {
                 var L = livro[i];
                 if (nomeLivroRefinado == L.Nome.Trim().ToLowerInvariant() && L.disponivel == true)
-              
-                    return L;      
+
+                    return L;
             }
 
             return null;
@@ -80,13 +91,43 @@ namespace Bibilioteca
         {
             this.disponivel = false; //o "this" referencia o objeto da class
             this.pessoa = nomePessoa; // associa a proprieda pessoa da class Livros com a class Pessoa
+            
         }
 
 
-        public void DevolverLivro()
+        public void DevolverLivro(Pessoa nomePessoa, Livros nomeLivro) //verificar se o objeto pessoa tem um livro associado e comparar se o esse livro bate com o parammetro nomeLivro 
         {
 
+            if (nomeLivro.pessoa == nomePessoa)
+            {
+                nomeLivro.disponivel = true;
+                nomeLivro.pessoa = null;
+                Console.WriteLine("O livro foi devolvido");
+            }
+
         }
+
+        public static Livros BuscarLivro(string nomeLivroBuscar)
+        {
+            if (string.IsNullOrWhiteSpace(nomeLivroBuscar)) // verifica se recebeu um termo nullo
+                return null;
+
+            string nomeRefinado = nomeLivroBuscar.Trim().ToLowerInvariant(); //transforma o parametro em nome minisculo e retira espaços desnecessarios para comparação mais certeira
+
+            for (int i = 0; i != livro.Count; i++)
+            {
+                var p = livro[i];
+                if (p == null || string.IsNullOrWhiteSpace(p.Nome))
+                    continue;
+
+                if (p.Nome.Trim().ToLowerInvariant() == nomeRefinado)
+                    return p; // retorna o objeto para que possa manipular de forma mais simples, sem a necessidade de pegar os dados atraves da posição na lista
+
+            }
+
+            return null;
+        }
+    
 
     
         

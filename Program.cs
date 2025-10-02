@@ -30,11 +30,16 @@ while (opcao != 6)
             Console.WriteLine("Digite o nome do livro que deseja cadastrar");
             string nomeLivroCadastro = Console.ReadLine();
             livro.CadastrarLivro(nomeLivroCadastro);
-            Console.WriteLine("Livro cadastrado com sucesso");
+           
+            Console.WriteLine("(Pressione qualque tecla para voltar ao menu)");
+            Console.ReadKey();
+           
             break;
 
         case "2":
             livro.ListarLivro();
+            Console.WriteLine("(Pressione qualque tecla para voltar ao menu)");
+            Console.ReadKey();
             break;
 
         case "3":
@@ -59,13 +64,40 @@ while (opcao != 6)
                 else
                 {
                     livroEncontrado.EmprestarLivro(pessoaEncontrada); // pessoa encontada é um objeto e está no parametro do metodo para associação da pessoa com o livro no emprestimo
-                    Console.WriteLine($" O livro {livroEncontrado.Nome} foi emprestado {pessoaEncontrada.Nome} ");
+                    Console.WriteLine($" O livro {livroEncontrado.Nome} foi emprestado para {pessoaEncontrada.Nome} ");
                 }
-            }    
-        break;
+            }
+            Console.WriteLine("(Pressione qualque tecla para voltar ao menu)");
+            Console.ReadKey();
+            
+            break;
 
         case "4":
-            livro.DevolverLivro();// criar logica do metodo
+            Console.WriteLine("Digite seu nome de usuario");
+            string nomeUsuarioDevolver = Console.ReadLine();
+            Pessoa pessoaEncontradaDevolver = Pessoa.Buscar(nomeUsuarioDevolver);
+
+            if (pessoaEncontradaDevolver == null)
+            {
+                Console.WriteLine("Seu cadastro não foi encontrado");
+            }
+            else
+            {
+                Console.WriteLine("Qual livro deseja devolver?");
+                string nomeLivroDevolver = Console.ReadLine();
+                Livros livroEncontradoDevolver = Livros.BuscarLivro(nomeLivroDevolver);
+                if (livroEncontradoDevolver == null)
+                {
+                    Console.WriteLine("Livro não encontrado no seu cadastro");
+                }
+                else
+                {
+                    livro.DevolverLivro(pessoaEncontradaDevolver, livroEncontradoDevolver);
+                }
+            }
+            Console.WriteLine("(Pressione qualque tecla para voltar ao menu)");
+            Console.ReadKey();
+            
             break;
 
         case "5":
@@ -74,8 +106,15 @@ while (opcao != 6)
             Console.WriteLine("Digite seu email");
             string email = Console.ReadLine();
             Pessoa.CadastraPessoa(nomePessoa, email);
+
+            Console.WriteLine("(Pressione qualque tecla para voltar ao menu)");
+            Console.ReadKey();
+           
             break;
-            
+
+        case "6":
+            opcao = 6;
+            break;    
     }
 
 }

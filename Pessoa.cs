@@ -24,9 +24,9 @@ namespace Bibilioteca
             Email = email;
         }
 
-        public static Pessoa CadastraPessoa(string nome, string email) 
+        public static Pessoa CadastraPessoa(string nome, string email)
         {
-            
+
             if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(email)) //verifica espaços em branco e campos null
             {
                 Console.WriteLine("Cadastro invalido, nome e email são campos obrigatorios");
@@ -35,21 +35,24 @@ namespace Bibilioteca
 
             for (int i = 0; i != pessoas.Count; i++) //verifica se ja esxiste um cadastro com esse email para evitar duplicatas
             {
-                if (pessoas[i].Email == email)
+                string emailRefinado = email.Trim().ToLowerInvariant();
+                if (pessoas[i].Email.Trim().ToLowerInvariant() == emailRefinado)
                 {
                     Console.WriteLine("Ja existe um cadastro com esse email");
                     return null;
                 }
-            }    
+            }
             Pessoa novapessoa = new Pessoa();
             novapessoa.Nome = nome;
             novapessoa.Email = email;
             pessoas.Add(novapessoa);
+            Console.WriteLine("Cadastro concluido");
             return novapessoa; 
+            
 
         }
 
-        public static Pessoa Buscar(string nomeUsuario) //aponta o parametro para o objeto, fazer laço de repetição para verificar presença na lista
+        public static Pessoa Buscar(string nomeUsuario) //aponta o parametro para o objeto. fazer laço de repetição para verificar presença na lista
         {
             if (string.IsNullOrWhiteSpace(nomeUsuario)) // verifica se recebeu um termo nullo
                 return null;
