@@ -41,7 +41,21 @@ namespace Bibilioteca
                     Console.WriteLine("Ja existe um cadastro com esse email");
                     return null;
                 }
+
             }
+            for (int i = 0; i != pessoas.Count; i++) //verifica se ja esxiste um cadastro com esse email para evitar duplicatas
+            {
+                string nomeRefinado = nome.Trim().ToLowerInvariant();
+                if (pessoas[i].Nome.Trim().ToLowerInvariant() == nomeRefinado)
+                {
+                    Console.WriteLine("Nome de usuario indisponivel");
+                    return null;
+                }
+
+            }
+
+
+
             Pessoa novapessoa = new Pessoa();
             novapessoa.Nome = nome;
             novapessoa.Email = email;

@@ -11,15 +11,16 @@ using System.Threading.Tasks;
 namespace Bibilioteca
 {
 
+//associar emprestimo por id do livro e proucurar outros possiveis bugs
 
     public class Livros
     {
         public string Nome { get; private set; }
         public int Id { get; private set; }
-        public bool disponivel = true; 
+        public bool disponivel = true;
         public Pessoa pessoa { get; private set; }
 
-        
+
 
         static private List<Livros> livro = new List<Livros>();
 
@@ -36,7 +37,7 @@ namespace Bibilioteca
 
 
         static int contador = 1;
-        public void CadastrarLivro(string nomeLivro) //verificar espaços em brano e valores null
+        public void CadastrarLivro(string nomeLivro) //verificar espaços em branco e valores null
         {
 
             if (string.IsNullOrWhiteSpace(nomeLivro))
@@ -57,10 +58,10 @@ namespace Bibilioteca
 
         public void ListarLivro()  //Faz uma verificação  se o livro está disponivel antes de mostrar na tela
         {
-
+            Console.WriteLine($"Os livros disponiveis são:");
             for (int i = 0; i != livro.Count; i++)
             {
-                Console.WriteLine($"Os livros disponiveis são");
+
                 if (livro[i].disponivel == true)
                 {
                     Console.WriteLine($" {livro[i].Nome}");
@@ -91,7 +92,7 @@ namespace Bibilioteca
         {
             this.disponivel = false; //o "this" referencia o objeto da class
             this.pessoa = nomePessoa; // associa a proprieda pessoa da class Livros com a class Pessoa
-            
+
         }
 
 
@@ -127,11 +128,11 @@ namespace Bibilioteca
 
             return null;
         }
-    
 
-    
-        
-        
+
+
+
+
 
     }
 }

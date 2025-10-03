@@ -39,7 +39,7 @@ while (opcao != 6)
         case "2":
             livro.ListarLivro();
             Console.WriteLine("(Pressione qualque tecla para voltar ao menu)");
-            Console.ReadKey();
+            Console.ReadKey(); 
             break;
 
         case "3":
